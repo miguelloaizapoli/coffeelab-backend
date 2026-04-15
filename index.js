@@ -13,14 +13,14 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'coffeelab',
-    port: 8889
+    port: 3306
 });
 
 connection.connect((err) => {
     if (err) {
         console.error('Error de conexión:', err);
     } else {
-        console.log('Conectado a MySQL 🔥');
+        console.log('Conectado a MySQL ');
     }
 });
 
@@ -34,7 +34,7 @@ app.post('/api/register', (req, res) => {
     }
 
     const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    const userRole = role || 'cliente'; // si no mandan rol, por defecto cliente
+    const userRole = role || 'empleado';
 
     connection.query(sql, [name, email, password, userRole], (err, result) => {
         if (err) return res.status(500).json(err);
@@ -66,12 +66,12 @@ app.post('/api/login', (req, res) => {
         }
 
         res.json({
-            message: 'Login exitoso 🔥',
+            message: 'Login exitoso ',
             user: {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role // 👈 ahora devuelve el rol
+                role: user.role
             }
         });
     });
@@ -134,7 +134,7 @@ app.delete('/api/products/:id', (req, res) => {
     connection.query('DELETE FROM products WHERE id=?', [id], (err) => {
         if (err) return res.status(500).json(err);
 
-        res.json({ message: 'Producto eliminado 🔥' });
+        res.json({ message: 'Producto eliminado ' });
     });
 });
 
@@ -254,7 +254,7 @@ app.post('/api/ventas', (req, res) => {
                     connection.query('UPDATE clientes SET puntos = puntos + ? WHERE id = ?',
                         [puntosGanados, cliente_id], (err) => {
                             if (err) return res.status(500).json(err);
-                            res.json({ message: 'Venta registrada 🔥', puntosGanados });
+                            res.json({ message: 'Venta registrada ', puntosGanados });
                         });
                 });
         });
